@@ -1,0 +1,7 @@
+<h1>hello chat, the quiz list!</h1>
+
+<ul>
+    <% list.forEach(quiz => { %>
+        <li><a href="/quiz?i=<%= quiz._id %>"><%= quiz.title %></a></li>
+    <% }) %>
+</ul>
