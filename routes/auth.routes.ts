@@ -33,7 +33,7 @@ router.post("/register", auth.guestAuth, async (req, res) => {
         if (password.length < 6 || password.length > 64) {
             errors.push("Password must be between 6 and 64 characters")
         }
-        if (errors.length > 0) throw new Error()
+        if (errors.length !== 0) throw new Error()
 
         const token = await Auth.register(username, password)
         res.cookie('token', token, COOKIE)

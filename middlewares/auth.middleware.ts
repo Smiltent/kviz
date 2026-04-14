@@ -3,7 +3,15 @@ import type { NextFunction, Request, Response } from "express"
 import User from "../models/User"
 import jwt from "jsonwebtoken"
 
-async function userAuth(req: Request, res: Response, next: NextFunction) {
+interface AuthReq extends Request {
+    user?: {
+        id: string,
+        username: string,
+        role: string
+    }
+}
+
+async function userAuth(req: AuthReq, res: Response, next: NextFunction) {
     try {
         const token = req.cookies?.token
         if (!token) throw new Error("Unauthorized")
@@ -12,6 +20,8 @@ async function userAuth(req: Request, res: Response, next: NextFunction) {
 
         const user = await User.findById(payload.id)
         if (!user) throw new Error("Cannot find user")
+
+        req.user = user
 
         return next()
     } catch (err) {
@@ -30,4 +40,13 @@ async function guestAuth(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-export default { userAuth, guestAuth }
+function requireRole(role: string) {
+    return (req: AuthReq, res: Response, next: NextFunction) => {
+        if (!req.user) return res.status(401).send("Forbidden")
+        if (req.user.role !== role) return res.status(403).send("Forbidden")
+
+        next()
+    }
+}
+
+export default { userAuth, guestAuth, requireRole }
