@@ -2,6 +2,7 @@
 import { registerRoutes } from "./express/registerRoutes.ts"
 import root from "../middlewares/root.middleware.ts"
 import express from "express"
+import cookieParser from "cookie-parser"
 
 export default class Express {
     private app: express.Express
@@ -19,6 +20,7 @@ export default class Express {
 
     private middleware() {
         this.app.use(express.json())
+        this.app.use(cookieParser())
         this.app.use(express.urlencoded({ extended: true }))
         this.app.use(express.static("public"))
     }
