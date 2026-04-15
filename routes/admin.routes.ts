@@ -2,7 +2,6 @@
 import auth from "../middlewares/auth.middleware"
 
 import Quiz from "../models/Quiz"
-import User from "../models/User"
 
 import { Router } from "express"
 const router = Router()
@@ -19,7 +18,7 @@ router.get("/quiz/list", auth.userAuth, auth.requireRole("admin"), async (req, r
 })
 
 router.get("/quiz/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
-    res.render("admin/qviews/admin/create.ejs views/admin/view.ejsuiz/create")
+    res.render("admin/quiz/create")
 })
 
 router.post("/quiz/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
@@ -75,25 +74,5 @@ router.post("/quiz/delete", auth.userAuth, auth.requireRole("admin"), async (req
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-
-/* // TODO: check if the requirements REQUIRES administrator creation of accounts
-router.get("/user/list", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
-    const list = await User.find().lean()
-
-    res.render("admin/user/list", { list })
-})
-
-router.get("/user/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
-    res.render("admin/user/create")
-})
-
-router.post("/user/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
-    const { username, password, role } = req.body
-})
-
-router.post("/user/delete", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
-    const { id } = req.body
-})
-*/
 
 export default router

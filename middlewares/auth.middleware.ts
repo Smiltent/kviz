@@ -36,7 +36,7 @@ async function guestAuth(req: Request, res: Response, next: NextFunction) {
 
         return next()
     } catch (err) {
-        return res.redirect("/")
+        return res.redirect("/quiz")
     }
 }
 

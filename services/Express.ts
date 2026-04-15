@@ -37,7 +37,7 @@ export default class Express {
 
     private start() {
         this.app.listen(this.port, () => {
-            console.log(`Server starting on http://0.0.0.0:${this.port}`)
+            console.info(`Server starting on http://0.0.0.0:${this.port}`)
         })
     }
 }

@@ -1,11 +1,14 @@
-<h1>hello chat, the quiz list!</h1>
 
-<% if (user.authorized) { %>
-    <p>Hello, <%= user.username %>!</p>
-<% } %>
+<h1>LOGIN!</h1>
+<form action="/auth/login" method="POST">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit" value="Login">
+</form>
 
-<ul>
-    <% list.forEach(quiz => { %>
-        <li><a href="/quiz?i=<%= quiz._id %>"><%= quiz.title %></a></li>
-    <% }) %>
-</ul>
+<h1>REGISTER!</h1>
+<form action="/auth/register" method="POST">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit" value="Register">
+</form>

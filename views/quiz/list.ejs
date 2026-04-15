@@ -1,0 +1,11 @@
+<h1>hello chat, the quiz list!</h1>
+
+<% if (user.authorized) { %>
+    <p>Hello, <%= user.username %>!</p>
+<% } %>
+
+<ul>
+    <% list.forEach(quiz => { %>
+        <li><a href="/quiz/q/<%= quiz._id %>"><%= quiz.title %></a></li>
+    <% }) %>
+</ul>

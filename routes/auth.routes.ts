@@ -14,10 +14,6 @@ const COOKIE = {
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
 
-router.get("/register", auth.guestAuth, async (req, res) => {
-    res.render("auth/register")
-})
-
 router.post("/register", auth.guestAuth, async (req, res) => {
     let errors: string[] = []
 
@@ -38,17 +34,13 @@ router.post("/register", auth.guestAuth, async (req, res) => {
         const token = await Auth.register(username, password)
         res.cookie('token', token, COOKIE)
 
-        res.redirect('/')
+        res.redirect('/quiz')
     } catch (err) {
         res.status(400).render("auth/register", { errors })
     }
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-
-router.get("/login", auth.guestAuth, async (req, res) => {
-    res.render("auth/login")
-})
 
 router.post("/login", auth.guestAuth, async (req, res) => {
     try {
@@ -57,12 +49,20 @@ router.post("/login", auth.guestAuth, async (req, res) => {
         const token = await Auth.login(username, password)
         res.cookie('token', token, COOKIE)
 
-        res.redirect("/")
+        res.redirect("/quiz")
     } catch (err) {
         res.status(400).render("auth/login", { errors: [err] })
     }
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
+
+router.get("/logout", auth.userAuth, async (req, res) => {
+    res.clearCookie("token")
+    res.redirect("/")
+})
+
+// ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
+
 
 export default router
