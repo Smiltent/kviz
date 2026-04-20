@@ -46,6 +46,8 @@ router.post("/quiz/create", auth.userAuth, auth.requireRole("admin"), async (req
             questions: parsed
         })
 
+        console.debug(`Created a new Quiz: '${title}'`)
+
         res.redirect("/admin/quiz/list")
     } catch (err) {
         if (errors.length === 0) {

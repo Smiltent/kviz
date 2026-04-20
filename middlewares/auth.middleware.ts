@@ -41,9 +41,11 @@ async function guestAuth(req: Request, res: Response, next: NextFunction) {
 }
 
 function requireRole(role: string) {
-    return (req: AuthReq, res: Response, next: NextFunction) => {
+    return async (req: AuthReq, res: Response, next: NextFunction) => {
         if (!req.user) return res.status(401).send("Forbidden")
-        if (req.user.role !== role) return res.status(403).send("Forbidden")
+        
+        const user = await User.findById(req.user.id)
+        if (user && user.role != role) return res.status(401).send("Forbidden")
 
         next()
     }

@@ -31,19 +31,17 @@ router.get("/q/:id", auth.userAuth, async (req, res) => {
 })
 
 // validate answer to server
-router.post("/q/:quizid/a/:answerid/:nr", auth.userAuth, async (req, res) => {
+router.post("/q/:quizid/:answerid/:nr", async (req, res) => {
     const { quizid, answerid, nr } = req.params
 
     const quiz = await Quiz.findById(quizid).lean()
-    if (!quiz) return res.status(404)
+    if (!quiz) return res.status(400).json({ error: "Can't find Quiz" })
     
     const question = quiz.questions[Number(nr)]
-    if (!question) return res.status(404)
+    if (!question) return res.status(400).json({ error: "Can't find Question" })    
 
     const answer = question.answers.find(a => a._id.toString() === answerid)
-    if (!answer) res.status(404)
-
-    res.json({ correct: answer?.isCorrect! })
+    res.json({ correct: answer?.isCorrect ?? false })
 })
 
 export default router

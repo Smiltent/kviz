@@ -41,7 +41,7 @@ function getCaller() {
     return `${path.basename(filePath)}:${line}`
 }
 
-export default function logging(debugMode: string) {
+export default function logging(debugMode: boolean) {
     const base = (level: string, ...args: any[]) => {
         const caller = getCaller()
 
@@ -55,6 +55,6 @@ export default function logging(debugMode: string) {
     console.error = (...args) => base(`${RED(" error ")}`, ...args)
     console.info = (...args) => base(`${BLUE(" info ")}`, ...args)
 
-    debugMode == "true" ? console.debug = (...args) => base(`${ORANGE(" debug ")}`, ...args) : console.debug = () => {}
+    debugMode == true ? console.debug = (...args) => base(`${ORANGE(" debug ")}`, ...args) : console.debug = () => {}
     console.debug("Debug mode is enabled")
 }

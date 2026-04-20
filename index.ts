@@ -2,10 +2,36 @@
 import Express from "./services/Express"
 import Database from "./services/Mongo"
 
-require('dotenv').config()
+import path from "path"
+import fs from "fs"
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+// arguments
+const debugArg = process.argv.find(arg => arg.startsWith("--debug"))
+const debug = debugArg ? true : false
+
+const envArg = process.argv.find(arg => arg.startsWith("--env="))
+const env = envArg ? envArg.split('=')[1] : 'prod'
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+// watching
+const entries = fs.readdirSync("./private/ts")
+    .filter(f => f.endsWith(".ts"))
+    .map(f => path.join("./private/ts", f))
+
+await Bun.build({
+    entrypoints: entries,
+    outdir: './public/js',
+    target: 'browser',
+    minify: env == "prod"
+})
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+require('dotenv').config({ path: `.env.${env}` })
 
 import log from './utils/log.ts'
-log(process.env.DEBUG!)
+log(debug)
 
-export const databaseClient = new Database(String(process.env.DATABASE_CONNECTION))
-export const expressClient = new Express(process.env.PORT)
+export const databaseClient = new Database(process.env.DATABASE_CONNECTION!)
+export const expressClient = new Express(process.env.PORT!)

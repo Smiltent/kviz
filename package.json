@@ -6,6 +6,10 @@
   "devDependencies": {
     "@types/bun": "latest"
   },
+  "scripts": {
+    "dev": "bun index.ts --debug --env=dev",
+    "serve": "bun index.ts --env=prod"
+  },
   "peerDependencies": {
     "typescript": "^5"
   },

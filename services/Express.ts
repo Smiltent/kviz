@@ -1,8 +1,9 @@
 
 import { registerRoutes } from "./express/registerRoutes.ts"
 import root from "../middlewares/root.middleware.ts"
-import express from "express"
 import cookieParser from "cookie-parser"
+import express from "express"
+import path from "path"
 
 export default class Express {
     private app: express.Express
@@ -15,6 +16,7 @@ export default class Express {
 
         this.middleware()
         this.routes()
+        this.public()
         this.start()
     }
 
@@ -33,6 +35,19 @@ export default class Express {
         this.app.use((req, res) => {
             res.status(404).render("404")
         })
+    }
+
+    private public() {
+        const isDev = process.env.NODE_DEV === "dev"
+
+        this.app.use(
+            '/public',
+            express.static(path.join(__dirname, '..', 'public'), {
+                etag: !isDev,
+                lastModified: !isDev,
+                maxAge: isDev ? 0 : '10s',
+            })
+        )
     }
 
     private start() {

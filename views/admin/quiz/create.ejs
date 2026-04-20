@@ -1,77 +1,14 @@
 <h1>Create Quiz</h1>
 
-<form id="quizForm" action="/admin/quiz/create" method="POST">
+<form id="qForm" action="/admin/quiz/create" method="POST">
     <input type="text" name="title" placeholder="Quiz title" required>
+    <div id="qContainer"></div>
 
-    <div id="questions-container"></div>
-
-    <button type="button" onclick="addQuestion()">Add Question</button>
-
-    <input type="hidden" name="questions" id="questionsInput">
+    <button type="button" id="qAddButton">Add Question</button>
+    <input type="hidden" name="questions" id="qInput">
 
     <br><br>
     <input type="submit" value="Create Quiz">
 </form>
 
-<script>
-function addQuestion() {
-    const container = document.getElementById("questions-container");
-
-    const qDiv = document.createElement("div");
-    qDiv.classList.add("question");
-
-    qDiv.innerHTML = `
-        <hr>
-        <input type="text" placeholder="Question text" class="question-text" required>
-
-        <div class="answers"></div>
-
-        <button type="button" onclick="addAnswer(this)">Add Answer</button>
-    `;
-
-    container.appendChild(qDiv);
-}
-
-function addAnswer(button) {
-    const answersDiv = button.parentElement.querySelector(".answers");
-
-    const aDiv = document.createElement("div");
-
-    aDiv.innerHTML = `
-        <input type="text" placeholder="Answer text" class="answer-text" required>
-        <label>
-            <input type="checkbox" class="is-correct">
-            Correct
-        </label>
-    `;
-
-    answersDiv.appendChild(aDiv);
-}
-
-document.getElementById("quizForm").addEventListener("submit", function() {
-    const questions = [];
-
-    document.querySelectorAll(".question").forEach(qDiv => {
-        const questionText = qDiv.querySelector(".question-text").value;
-
-        const answers = [];
-
-        qDiv.querySelectorAll(".answers > div").forEach(aDiv => {
-            const text = aDiv.querySelector(".answer-text").value;
-            const isCorrect = aDiv.querySelector(".is-correct").checked;
-
-            answers.push({
-                text,
-                isCorrect
-            });
-        });
-
-        questions.push({
-            question: questionText,
-            answers
-        });
-    });
-
-    document.getElementById("questionsInput").value = JSON.stringify(questions);
-});
-</script>
+<script src="/public/js/createQuiz.js"></script>
