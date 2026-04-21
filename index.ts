@@ -11,7 +11,7 @@ const debugArg = process.argv.find(arg => arg.startsWith("--debug"))
 const debug = debugArg ? true : false
 
 const envArg = process.argv.find(arg => arg.startsWith("--env="))
-const env = envArg ? envArg.split('=')[1] : 'prod'
+const env = envArg ? `.${envArg.split('=')[1]}` : ''
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // watching
@@ -23,12 +23,12 @@ await Bun.build({
     entrypoints: entries,
     outdir: './public/js',
     target: 'browser',
-    minify: env == "prod"
+    minify: env == ''
 })
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-require('dotenv').config({ path: `.env.${env}` })
+require('dotenv').config({ path: `.env${env}` })
 
 import log from './utils/log.ts'
 log(debug)

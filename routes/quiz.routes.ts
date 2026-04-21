@@ -1,6 +1,6 @@
 
-import auth from "../middlewares/auth.middleware"
-import Quiz from "../models/Quiz"
+import auth from "@/middlewares/auth.middleware"
+import Quiz from "@/models/Quiz"
 
 import { Router } from "express"
 const router = Router()
@@ -12,10 +12,9 @@ router.get("/", auth.userAuth, async (req, res) => {
 })
 
 // get question & it's answers
-router.get("/q/:id", auth.userAuth, async (req, res) => {
-    const { id } = req.params
-    const quiz = await Quiz.findById(id)
-        .lean()
+router.post("/q/start", auth.userAuth, async (req, res) => {
+    const { quizid } = req.body
+    const quiz = await Quiz.findById(quizid).lean()
 
     if (!quiz) {
         return res.status(404)

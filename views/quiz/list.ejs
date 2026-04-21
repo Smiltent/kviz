@@ -1,11 +1,19 @@
 <h1>hello chat, the quiz list!</h1>
 
-<% if (user.authorized) { %>
-    <p>Hello, <%= user.username %>!</p>
-<% } %>
+<p>Hello, <%= user.username %>!</p>
+<form action="/auth/logout" method="POST">
+    <input type="submit" value="Logout">
+</form>
 
 <ul>
-    <% list.forEach(quiz => { %>
-        <li><a href="/quiz/q/<%= quiz._id %>"><%= quiz.title %></a></li>
-    <% }) %>
+
 </ul>
+
+<form action="/quiz/q/start" method="post">
+    <select name="quizid">
+        <% list.forEach(quiz => { %>
+                <option value="<%= quiz._id %>"><%= quiz.title %></option>
+        <% }) %>
+    </select>
+    <input type="submit" value="Start Quiz">
+</form>

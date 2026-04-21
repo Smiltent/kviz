@@ -1,13 +1,13 @@
 
 import type { NextFunction, Request, Response } from "express"
-import User from "../models/User"
+import User from "@/models/User"
 import jwt from "jsonwebtoken"
 
 interface AuthReq extends Request {
     user?: {
         id: string,
         username: string,
-        role: string
+        roles: string[]
     }
 }
 
@@ -42,10 +42,8 @@ async function guestAuth(req: Request, res: Response, next: NextFunction) {
 
 function requireRole(role: string) {
     return async (req: AuthReq, res: Response, next: NextFunction) => {
-        if (!req.user) return res.status(401).send("Forbidden")
-        
-        const user = await User.findById(req.user.id)
-        if (user && user.role != role) return res.status(401).send("Forbidden")
+        if (!req.user) return res.status(401).send("Unauthorized")
+        if (!req.user.roles.includes(role)) return res.status(403).send("Forbidden")
 
         next()
     }

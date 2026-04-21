@@ -1,7 +1,6 @@
 
-import auth from "../middlewares/auth.middleware"
-
-import Quiz from "../models/Quiz"
+import auth from "@/middlewares/auth.middleware"
+import Quiz from "@/models/Quiz"
 
 import { Router } from "express"
 const router = Router()

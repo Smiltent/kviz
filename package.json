@@ -7,8 +7,9 @@
     "@types/bun": "latest"
   },
   "scripts": {
-    "dev": "bun index.ts --debug --env=dev",
-    "serve": "bun index.ts --env=prod"
+    "dev": "bun --watch index.ts --debug --env=dev",
+    "debug": "bun index.ts --debug",
+    "prod": "bun index.ts"
   },
   "peerDependencies": {
     "typescript": "^5"

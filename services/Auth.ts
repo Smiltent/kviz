@@ -1,12 +1,12 @@
 
-import User from "../models/User"
+import User from "@/models/User"
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
 
 export default class Auth {
     public static async register(username: string, password: string) { 
         const existing = await User.findOne({ username })
-        if (existing) throw new Error("Username already exists")
+        if (existing) throw new Error("Username is already taken")
 
         const hash = await bcrypt.hash(password, 12)
         await User.create({ username, password: hash })

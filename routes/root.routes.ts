@@ -1,5 +1,5 @@
 
-import auth from "../middlewares/auth.middleware"
+import auth from "@/middlewares/auth.middleware"
 import { Router } from "express"
 const router = Router()
 

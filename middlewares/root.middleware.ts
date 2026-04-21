@@ -1,7 +1,7 @@
 
 import type { NextFunction, Request, Response } from "express"
+import User from "@/models/User"
 import jwt from "jsonwebtoken"
-import User from "../models/User"
 
 export default async function root(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies?.token

@@ -1,6 +1,6 @@
 
-import auth from "../middlewares/auth.middleware"
-import Auth from "../services/Auth"
+import auth from "@/middlewares/auth.middleware"
+import Auth from "@/services/Auth"
 
 import { Router } from "express"
 const router = Router()
@@ -13,7 +13,6 @@ const COOKIE = {
 }
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-
 router.post("/register", auth.guestAuth, async (req, res) => {
     let errors: string[] = []
 
@@ -36,7 +35,11 @@ router.post("/register", auth.guestAuth, async (req, res) => {
 
         res.redirect('/quiz')
     } catch (err) {
-        res.status(400).render("auth/register", { errors })
+        if (err instanceof Error && err.message) {
+            errors.push(err.message)
+        }
+        
+        res.status(400).render("index", { registerErrors: errors })
     }
 })
 
@@ -51,13 +54,16 @@ router.post("/login", auth.guestAuth, async (req, res) => {
 
         res.redirect("/quiz")
     } catch (err) {
-        res.status(400).render("auth/login", { errors: [err] })
+        console.error("LOGIN ERROR:", err)
+
+        const error = err instanceof Error ? err.message : "An error occurred"
+        res.status(400).render("index", { loginErrors: [error] })
     }
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
 
-router.get("/logout", auth.userAuth, async (req, res) => {
+router.post("/logout", auth.userAuth, async (req, res) => {
     res.clearCookie("token")
     res.redirect("/")
 })

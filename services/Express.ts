@@ -1,6 +1,6 @@
 
 import { registerRoutes } from "./express/registerRoutes.ts"
-import root from "../middlewares/root.middleware.ts"
+import root from "@/middlewares/root.middleware.ts"
 import cookieParser from "cookie-parser"
 import express from "express"
 import path from "path"
