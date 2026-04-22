@@ -14,6 +14,7 @@ interface Questions {
     answers: Answers[];
 }
 
+// add more questions
 questionAddButton.addEventListener("click", () => {
     const qDiv = document.createElement("div")
     qDiv.classList.add("question")
@@ -43,9 +44,27 @@ questionAddButton.addEventListener("click", () => {
     questionContainer.appendChild(qDiv)
 })
 
-questionForm.addEventListener("submit", () => {
+questionForm.addEventListener("submit", (e) => {
+    let valid = true
+
+    // validate if the questions has at least one correct selected
+    document.querySelectorAll(".question").forEach((q, i) => {
+        const checkboxes = q.querySelectorAll(".is-correct")
+        const hasCorrect = Array.from(checkboxes).some(
+            cb => (cb as HTMLInputElement).checked
+        )
+
+        if (!hasCorrect) {
+            valid = false
+            alert(`Question ${i + 1} must have at least one correct answer`)
+        }
+    })
+
+    if (!valid) return e.preventDefault()
+
     const questions: Questions[] = []
 
+    // parse for backend submittion
     document.querySelectorAll(".question").forEach(qDiv => {
         const questionText = (qDiv.querySelector(".question-text") as HTMLInputElement).value
         const answers: Answers[] = []

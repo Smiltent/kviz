@@ -2,25 +2,21 @@
 import auth from "@/middlewares/auth.middleware"
 import Quiz from "@/models/Quiz"
 
-import { Router } from "express"
+import e, { Router } from "express"
 const router = Router()
 
-router.get("/dashboard", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
-    res.render("admin/dashboard")
+router.get("/", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
+    const list = await Quiz.find().lean()
+
+    res.render("admin/index", { list })
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-
-router.get("/quiz/list", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
-    const list = await Quiz.find().lean()
-    res.render("admin/quiz/list", { list })
+router.get("/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
+    res.render("admin/create")
 })
 
-router.get("/quiz/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
-    res.render("admin/quiz/create")
-})
-
-router.post("/quiz/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
+router.post("/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
     const errors: string[] = []
 
     try {
@@ -34,11 +30,19 @@ router.post("/quiz/create", auth.userAuth, auth.requireRole("admin"), async (req
             errors.push("Questions shouldn't be empty")
         }
 
-        if (errors.length !== 0) throw new Error()
-
         const parsed = typeof questions === "string"
             ? JSON.parse(questions)
             : questions
+
+        parsed.forEach((q: { answers: any[] }, i: number) => {
+            const hasCorrect = q.answers?.some(a => a.isCorrect)
+
+            if (!hasCorrect) {
+                errors.push(`Question ${i + 1} must have at least one correct answer`)
+            }
+        })
+
+        if (errors.length !== 0) throw new Error()
 
         await Quiz.create({
             title,
@@ -47,33 +51,37 @@ router.post("/quiz/create", auth.userAuth, auth.requireRole("admin"), async (req
 
         console.debug(`Created a new Quiz: '${title}'`)
 
-        res.redirect("/admin/quiz/list")
+        res.redirect("/admin/")
     } catch (err) {
         if (errors.length === 0) {
             errors.push("Failed to create Quiz")
         }
 
         console.error(`Failed to create quiz: ${err}`)
-        res.status(500).render("admin/quiz/create", { errors: errors })
+        res.status(500).render("admin/create", { createErrors: errors })
     }
 })
 
-router.post("/quiz/delete", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
+router.post("/delete", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
+    const { quizid } = req.body
+    const errors: string[] = []
+
     try {
-        const { id } = req.body
+        const quiz = await Quiz.findById(quizid)
+        if (!quiz) {
+            errors.push("Quiz not found")            
+        }
 
-        const quiz = await Quiz.findById(id)
-        if (!quiz) return res.redirect("/admin/quiz/list")
+        if (errors.length !== 0) throw new Error()
             
-        await Quiz.findByIdAndDelete(id)
+        await Quiz.findByIdAndDelete(quizid)
 
-        res.redirect("/admin/quiz/list")
+        res.redirect("/admin")
     } catch (err) {
         console.error(err)
-        res.status(500).render("admin/quiz/view", { id: req.body?.id, errors: ["Failed to delete Quiz"] })
+        res.status(500).json({ errors })
     } 
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-
 export default router

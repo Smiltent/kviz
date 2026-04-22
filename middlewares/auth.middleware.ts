@@ -22,7 +22,6 @@ async function userAuth(req: AuthReq, res: Response, next: NextFunction) {
         if (!user) throw new Error("Cannot find user")
 
         req.user = user
-
         return next()
     } catch (err) {
         return res.redirect("/")

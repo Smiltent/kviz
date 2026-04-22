@@ -7,7 +7,7 @@ const router = Router()
 
 const COOKIE = {
     httpOnly: true,
-    secure: process.env.ENV === 'prod',
+    secure: process.env.NODE_DEV === "prod",
     sameSite: 'strict' as 'strict',
     maxAge: 24 * 60 * 60 * 1000
 }
@@ -44,7 +44,6 @@ router.post("/register", auth.guestAuth, async (req, res) => {
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-
 router.post("/login", auth.guestAuth, async (req, res) => {
     try {
         const { username, password } = req.body
@@ -62,13 +61,11 @@ router.post("/login", auth.guestAuth, async (req, res) => {
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-
 router.post("/logout", auth.userAuth, async (req, res) => {
     res.clearCookie("token")
     res.redirect("/")
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-
 
 export default router

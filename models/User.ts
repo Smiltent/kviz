@@ -8,6 +8,6 @@ export default mongoose.model('User', new Schema({
     
     highScores: [{
         id: { type: String, required: true },
-        score: { type: String, required: true}
+        score: { type: Number, required: true}
     }]
 }))

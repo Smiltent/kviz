@@ -3,8 +3,6 @@ import type { Application } from "express"
 import path from "path"
 import fs from "fs"
 
-// https://github.com/Smiltent/sitev2/blob/main/services/express/registerRoutes.ts
-
 // automatically register routes in the `routes/` folder, without having to manually register them
 export async function registerRoutes(app: Application) {
     const dir = path.join(__dirname, "..", "..", "routes")

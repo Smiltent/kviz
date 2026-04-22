@@ -5,11 +5,7 @@
     <input type="submit" value="Logout">
 </form>
 
-<ul>
-
-</ul>
-
-<form action="/quiz/q/start" method="post">
+<form action="/quiz/start" method="post">
     <select name="quizid">
         <% list.forEach(quiz => { %>
                 <option value="<%= quiz._id %>"><%= quiz.title %></option>

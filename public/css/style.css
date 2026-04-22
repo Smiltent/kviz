@@ -1,0 +1,33 @@
+
+:root {
+    padding: 0;
+    margin: 0;
+}
+
+/*
+
+*/
+
+/* 
+    PROGRESS BARRR
+*/
+.qProgress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.qProgressTrack {
+    flex: 1;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.qProgressFill {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 4px;
+}

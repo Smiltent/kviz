@@ -1,6 +1,7 @@
 
 import { registerRoutes } from "./express/registerRoutes.ts"
 import root from "@/middlewares/root.middleware.ts"
+import expressLayouts from "express-ejs-layouts"
 import cookieParser from "cookie-parser"
 import express from "express"
 import path from "path"
@@ -11,9 +12,6 @@ export default class Express {
     constructor(private port: string | number = 3000) {
         this.app = express()
 
-        this.app.set("view engine", "ejs")
-        this.app.set("layout", "components/$index")
-
         this.middleware()
         this.routes()
         this.public()
@@ -21,15 +19,19 @@ export default class Express {
     }
 
     private middleware() {
+        this.app.use(expressLayouts)
         this.app.use(express.json())
         this.app.use(cookieParser())
         this.app.use(express.urlencoded({ extended: true }))
+
+        this.app.set("view engine", "ejs")
+        this.app.set("layout", "components/$index")
+
+        this.app.use(root)
         this.app.use(express.static("public"))
     }
 
     private async routes() {
-        this.app.use(root)
-
         await registerRoutes(this.app)
 
         this.app.use((req, res) => {
