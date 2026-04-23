@@ -20,8 +20,6 @@ router.get("/highscores", auth.userAuth, async (req, res) => {
         user.highScores.map(async (hs) => {
             const quiz = await Quiz.findById(hs.id)
 
-            console.log(quiz?.questions)
-
             return {
                 name: quiz ? quiz.title : "Unknown Quiz",
                 count: quiz ? quiz.questions.length : 0,
