@@ -2,6 +2,7 @@
 <div class="header flex">
     <div class="hTitle flex">
         <h1>quiz admin</h1>
+        <a href="/admin/create">new quiz</a>
         <a href="/quiz">main page</a>
     </div>
 
@@ -14,14 +15,11 @@
     </div>
 </div>
 
-<a href="/admin/create">create a new quiz</a>
-
-
 <% if (typeof list !== 'undefined' && list.length > 0) { %>
     <form action="/admin/delete" method="POST" class="qBox flex">
         <select name="quizid">
             <% list.forEach(quiz => { %>
-                    <option value="<%= quiz._id %>"><%= quiz.title %></option>
+                <option value="<%= quiz._id %>"><%= quiz.title %></option>
             <% }) %>
         </select>
         <input type="submit" value="Delete Quiz">

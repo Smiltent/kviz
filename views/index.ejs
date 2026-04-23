@@ -1,5 +1,5 @@
 
-<div class="loginRegContainer flex">
+<div class="loginRegContainer">
     <div>
         <h1>login</h1>
         <form action="/auth/login" method="POST" class="qBox flex">
@@ -10,7 +10,7 @@
 
         <% if (typeof loginErrors !== 'undefined' && loginErrors) { %>
             <% for (let error of loginErrors) { %>
-                <p><%= error %></p>
+                <p class="red"><%= error %></p>
             <% } %>
         <% } %>
     </div>
@@ -24,12 +24,14 @@
         </form>
         <% if (typeof registerErrors !== 'undefined' && registerErrors) { %>
             <% for (let error of registerErrors) { %>
-                <p><%= error %></p>
+                <p class="red"><%= error %></p>
             <% } %>
         <% } %>
     </div>
 
+    <!-- these are placed here temporarily, accounts with these passwords and usernames are not created automatically -->
     <p>psst... hey! the admin password is admin1</p>
+    <p>psst... hey! the user password is user11</p>
 </div>
 
 
