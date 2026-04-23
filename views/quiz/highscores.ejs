@@ -17,9 +17,9 @@
 <div>
     <% if (typeof highscores !== 'undefined' && highscores.length > 0) { %>
         <% highscores.forEach(score => { %>
-            <p><%= score.id %> - <%= score.score %></p>
+            <p><%= score.name %> - <%= score.score %>/<%= score.count %></p>
         <% })%>
     <% } else { %>
-        <p>no high scores found... complete some quizzes!!</p>
+        <p>no high scores found... maybe complete some quizzes??</p>
     <% } %>
 </div>

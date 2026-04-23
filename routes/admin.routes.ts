@@ -1,8 +1,9 @@
 
 import auth from "@/middlewares/auth.middleware"
 import Quiz from "@/models/Quiz"
+import User from "@/models/User"
 
-import e, { Router } from "express"
+import { Router } from "express"
 const router = Router()
 
 router.get("/", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
@@ -12,7 +13,6 @@ router.get("/", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
-// TODO, for view: better design and functionallity, add remove question and answers
 router.get("/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
     res.render("admin/create")
 })
@@ -76,6 +76,10 @@ router.post("/delete", auth.userAuth, auth.requireRole("admin"), async (req, res
         if (errors.length !== 0) throw new Error()
             
         await Quiz.findByIdAndDelete(quizid)
+        await User.updateMany(
+            { "highScores.id": quizid },
+            { $pull: { highScores: { id: quizid }}}
+        )
 
         res.redirect("/admin")
     } catch (err) {

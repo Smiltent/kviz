@@ -17,30 +17,38 @@ interface Questions {
 // add more questions
 questionAddButton.addEventListener("click", () => {
     const qDiv = document.createElement("div")
-    qDiv.classList.add("question")
+    qDiv.classList.add("qQuestion")
 
     qDiv.innerHTML = `
-        <hr>
-        <input type="text" placeholder="Question text" class="question-text" required>
-        <div class="answers"></div>
+        <hr class="pbHr">
+        <div class="qCreateTitle flex">
+            <input type="text" placeholder="Question" class="qQuestionText" required>
+            <button type="button" class="qRemoveQuestionBtn">Remove</button>
+        </div>  
+        <div class="qAnswers"></div>
 
         <button type="button" class="qAnswerBtn">Add Answer</button>
-        <button type="button" class="qRemoveQuestionBtn">Remove Question</button>
     `
 
+    qDiv.querySelector(".qRemoveQuestionBtn")?.addEventListener("click", () => {
+        qDiv.remove()
+    })
+
     qDiv.querySelector(".qAnswerBtn")?.addEventListener("click", (e) => {
-        const answersDiv = (e.target as HTMLButtonElement).parentElement?.querySelector(".answers")
+        const answersDiv = (e.target as HTMLButtonElement).parentElement?.querySelector(".qAnswers")
         const aDiv = document.createElement("div")
 
         aDiv.innerHTML = `
-            <input type="text" placeholder="Answer text" class="answer-text" required>
-            <label>
-                <input type="checkbox" class="is-correct">
-                Correct
-            </label>
+            <input type="checkbox" class="qIsCorrect">
+            <input type="text" placeholder="Answer" class="qAnswerText" required>
 
-            <button type="button" class="qRemoveAnswerBtn">Remove Answer</button>
+            <button type="button" class="qRemoveAnswerBtn">Remove</button>
         `
+
+        aDiv.querySelector(".qRemoveAnswerBtn")?.addEventListener("click", () => {
+            aDiv.remove()
+        })
+
         answersDiv?.appendChild(aDiv)
     })
 
@@ -51,8 +59,14 @@ questionForm.addEventListener("submit", (e) => {
     let valid = true
 
     // validate if the questions has at least one correct selected
-    document.querySelectorAll(".question").forEach((q, i) => {
-        const checkboxes = q.querySelectorAll(".is-correct")
+    const que = document.querySelectorAll(".qQuestion")
+    if (que.length === 0) {
+        alert("Please add at least one question!! 😡😡😡")
+        return e.preventDefault()
+    }
+
+    que.forEach((q, i) => {
+        const checkboxes = q.querySelectorAll(".qIsCorrect")
         const hasCorrect = Array.from(checkboxes).some(
             cb => (cb as HTMLInputElement).checked
         )
@@ -68,13 +82,13 @@ questionForm.addEventListener("submit", (e) => {
     const questions: Questions[] = []
 
     // parse for backend submittion
-    document.querySelectorAll(".question").forEach(qDiv => {
-        const questionText = (qDiv.querySelector(".question-text") as HTMLInputElement).value
+    document.querySelectorAll(".qQuestion").forEach(qDiv => {
+        const questionText = (qDiv.querySelector(".qQuestionText") as HTMLInputElement).value
         const answers: Answers[] = []
 
-        qDiv.querySelectorAll(".answers > div").forEach(aDiv => {
-            const text = (aDiv.querySelector(".answer-text") as HTMLInputElement).value
-            const isCorrect = (aDiv.querySelector(".is-correct") as HTMLInputElement).checked
+        qDiv.querySelectorAll(".qAnswers > div").forEach(aDiv => {
+            const text = (aDiv.querySelector(".qAnswerText") as HTMLInputElement).value
+            const isCorrect = (aDiv.querySelector(".qIsCorrect") as HTMLInputElement).checked
 
             answers.push({
                 text,

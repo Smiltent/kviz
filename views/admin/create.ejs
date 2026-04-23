@@ -1,7 +1,7 @@
 <h1>Create Quiz</h1>
 
 <form id="qForm" action="/admin/create" method="POST">
-    <input type="text" name="title" placeholder="Quiz title" required>
+    <input type="text" name="title" placeholder="Quiz Title" required>
     <div id="qContainer"></div>
 
     <input type="hidden" name="questions" id="qInput">
@@ -12,7 +12,7 @@
         <% } %>
     <% } %>
 
-    <br><br>
+    <br>
     <button type="button" id="qAddButton" class="betterBtn">Add Question</button>
     <input type="submit" value="Create Quiz">
 </form>

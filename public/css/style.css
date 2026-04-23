@@ -78,6 +78,21 @@ input[type=submit], .betterBtn {
     padding-left: 1rem
 }
 
+/*
+    CREATE QUIZZZ
+*/
+.pbHr {
+    margin: 1rem 0;
+}
+
+.qCreateTitle *:not(:last-child) {
+    margin-right: 5px;
+}
+
+.answers *:not(:last-child) {
+    margin-right: 3px;
+}
+
 /* 
     PROGRESS BARRR
 */

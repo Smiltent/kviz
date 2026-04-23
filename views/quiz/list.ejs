@@ -19,11 +19,15 @@
     </div>
 </div>
 
-<form action="/quiz/start" method="POST" class="qBox flex">
-    <select name="quizid">
-        <% list.forEach(quiz => { %>
+<% if (typeof list !== 'undefined' && list.length > 0) { %>
+    <form action="/quiz/start" method="POST" class="qBox flex">
+        <select name="quizid">
+            <% list.forEach(quiz => { %>
                 <option value="<%= quiz._id %>"><%= quiz.title %></option>
-        <% }) %>
-    </select>
-    <input type="submit" value="Start Quiz">
-</form>
+            <% }) %>
+        </select>
+        <input type="submit" value="Start Quiz">
+    </form>
+<% } else { %>
+    <p>no quizzes found... check back later!!</p>
+<% } %>

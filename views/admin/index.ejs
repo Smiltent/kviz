@@ -15,11 +15,17 @@
 </div>
 
 <a href="/admin/create">create a new quiz</a>
-<form action="/admin/delete" method="POST" class="qBox flex">
-    <select name="quizid">
-        <% list.forEach(quiz => { %>
-                <option value="<%= quiz._id %>"><%= quiz.title %></option>
-        <% }) %>
-    </select>
-    <input type="submit" value="Delete Quiz">
-</form>
+
+
+<% if (typeof list !== 'undefined' && list.length > 0) { %>
+    <form action="/admin/delete" method="POST" class="qBox flex">
+        <select name="quizid">
+            <% list.forEach(quiz => { %>
+                    <option value="<%= quiz._id %>"><%= quiz.title %></option>
+            <% }) %>
+        </select>
+        <input type="submit" value="Delete Quiz">
+    </form>
+<% } else { %>
+    <p>no quizzes to delete found... create one!</p>
+<% } %>

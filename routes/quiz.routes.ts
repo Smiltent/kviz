@@ -13,12 +13,24 @@ router.get("/", auth.userAuth, async (req, res) => {
 })
 
 router.get("/highscores", auth.userAuth, async (req, res) => {
-    // TODO: Parse quiz names to high scores, also get max questions, so you can do `${value} out of ${total}` 
-
     const user = await User.findById(res.locals.user.id)
     if (!user) return res.status(404).json({ message: `User not found` })
 
-    res.render("quiz/highscores", { highscores: user.highScores })
+    const highscores = await Promise.all(
+        user.highScores.map(async (hs) => {
+            const quiz = await Quiz.findById(hs.id)
+
+            console.log(quiz?.questions)
+
+            return {
+                name: quiz ? quiz.title : "Unknown Quiz",
+                count: quiz ? quiz.questions.length : 0,
+                score: hs.score
+            }
+        })
+    )
+
+    res.render("quiz/highscores", { highscores })
 })
 
 // get question & it's answers
