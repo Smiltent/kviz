@@ -12,6 +12,15 @@ router.get("/", auth.userAuth, async (req, res) => {
     res.render("quiz/list", { list })
 })
 
+router.get("/highscores", auth.userAuth, async (req, res) => {
+    // TODO: Parse quiz names to high scores, also get max questions, so you can do `${value} out of ${total}` 
+
+    const user = await User.findById(res.locals.user.id)
+    if (!user) return res.status(404).json({ message: `User not found` })
+
+    res.render("quiz/highscores", { highscores: user.highScores })
+})
+
 // get question & it's answers
 router.post("/start", auth.userAuth, async (req, res) => {
     const { quizid } = req.body

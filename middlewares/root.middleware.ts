@@ -16,6 +16,7 @@ export default async function root(req: Request, res: Response, next: NextFuncti
             res.locals.user = {
                 authorized: true,
                 
+                roles: user.roles,
                 id: user._id,
                 username: user.username,
             }

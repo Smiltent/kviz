@@ -12,6 +12,7 @@ router.get("/", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
+// TODO, for view: better design and functionallity, add remove question and answers
 router.get("/create", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
     res.render("admin/create")
 })

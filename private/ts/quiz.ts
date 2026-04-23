@@ -152,7 +152,13 @@ function showResults(data: QuizEndResponse) {
     if (!container) return
 
     container.innerHTML = `
-        <h1>Quiz Complete!</h1>
+        <div class="header flex">
+            <div class="qTitle flex">
+                <h1>Quiz Complete!</h1>
+                <a href="/quiz">main page</a>
+            </div>
+        </div>
+        
         <p>You scored ${data.correct} out of ${data.total}!
     `
 }

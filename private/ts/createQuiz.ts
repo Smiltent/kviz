@@ -25,6 +25,7 @@ questionAddButton.addEventListener("click", () => {
         <div class="answers"></div>
 
         <button type="button" class="qAnswerBtn">Add Answer</button>
+        <button type="button" class="qRemoveQuestionBtn">Remove Question</button>
     `
 
     qDiv.querySelector(".qAnswerBtn")?.addEventListener("click", (e) => {
@@ -37,6 +38,8 @@ questionAddButton.addEventListener("click", () => {
                 <input type="checkbox" class="is-correct">
                 Correct
             </label>
+
+            <button type="button" class="qRemoveAnswerBtn">Remove Answer</button>
         `
         answersDiv?.appendChild(aDiv)
     })

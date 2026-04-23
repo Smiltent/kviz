@@ -1,28 +1,35 @@
 
-<p>psst... hey! the admin password is admin1</p>
+<div class="loginRegContainer flex">
+    <div>
+        <h1>login</h1>
+        <form action="/auth/login" method="POST" class="qBox flex">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" value="Login">
+        </form>
 
-<h1>LOGIN!</h1>
-<form action="/auth/login" method="POST">
-    <input type="text" name="username">
-    <input type="password" name="password">
-    <input type="submit" value="Login">
-</form>
+        <% if (typeof loginErrors !== 'undefined' && loginErrors) { %>
+            <% for (let error of loginErrors) { %>
+                <p><%= error %></p>
+            <% } %>
+        <% } %>
+    </div>
 
-<% if (typeof loginErrors !== 'undefined' && loginErrors) { %>
-    <% for (let error of loginErrors) { %>
-        <p><%= error %></p>
-    <% } %>
-<% } %>
+    <div>
+        <h1>register</h1>
+        <form action="/auth/register" method="POST" class="qBox flex">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" value="Register">
+        </form>
+        <% if (typeof registerErrors !== 'undefined' && registerErrors) { %>
+            <% for (let error of registerErrors) { %>
+                <p><%= error %></p>
+            <% } %>
+        <% } %>
+    </div>
 
-<h1>REGISTER!</h1>
-<form action="/auth/register" method="POST">
-    <input type="text" name="username">
-    <input type="password" name="password">
-    <input type="submit" value="Register">
-</form>
+    <p>psst... hey! the admin password is admin1</p>
+</div>
 
-<% if (typeof registerErrors !== 'undefined' && registerErrors) { %>
-    <% for (let error of registerErrors) { %>
-        <p><%= error %></p>
-    <% } %>
-<% } %>
+

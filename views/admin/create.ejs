@@ -4,7 +4,6 @@
     <input type="text" name="title" placeholder="Quiz title" required>
     <div id="qContainer"></div>
 
-    <button type="button" id="qAddButton">Add Question</button>
     <input type="hidden" name="questions" id="qInput">
 
     <% if (typeof createErrors !== 'undefined' && createErrors) { %>
@@ -14,6 +13,7 @@
     <% } %>
 
     <br><br>
+    <button type="button" id="qAddButton" class="betterBtn">Add Question</button>
     <input type="submit" value="Create Quiz">
 </form>
 

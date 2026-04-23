@@ -1,0 +1,25 @@
+
+<div class="header flex">
+    <div class="hTitle flex">
+        <h1>the highscores</h1>
+        <a href="/quiz">main page</a>
+    </div>
+
+    <div class="hUser flex">
+        <p>hello, <%= user.username %>!</p>
+
+        <form action="/auth/logout" method="POST">
+            <input type="submit" value="Logout">
+        </form> 
+    </div>
+</div>
+
+<div>
+    <% if (typeof highscores !== 'undefined' && highscores.length > 0) { %>
+        <% highscores.forEach(score => { %>
+            <p><%= score.id %> - <%= score.score %></p>
+        <% })%>
+    <% } else { %>
+        <p>no high scores found... complete some quizzes!!</p>
+    <% } %>
+</div>

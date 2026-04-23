@@ -1,12 +1,82 @@
 
-:root {
+* {
     padding: 0;
     margin: 0;
 }
 
 /*
-
+    UTIL
 */
+.flex { display: flex }
+
+/*
+    LOGIN REGISTER PAGEEE
+*/
+.loginRegContainer div:not(:last-child) {
+    padding-bottom: 1rem;
+}
+
+/*
+    MAINNNN
+*/
+body {
+    padding: 2rem;
+}
+
+h1, h2, p, a, label, input {
+    font-family: Rubik, sans-serif;
+}
+
+input[type=submit], .betterBtn {
+    padding: 3px 10px;
+}
+
+/*
+    HEADERRR
+*/
+.header {
+    justify-content: space-between;
+    flex-direction: row;
+    padding-bottom: 1rem;
+}
+
+.hTitle {
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+.hTitle *:not(:first-child) {
+    padding-left: 1rem
+}
+
+.hUser {
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+.hUser *:not(:last-child) {
+    padding-right: 1rem
+}
+
+/*
+    QUIZ
+*/
+.qBox {
+    flex-direction: column;
+    max-width: 200px;
+}
+
+.qTitle {
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+.qTitle *:not(:first-child) {
+    padding-left: 1rem
+}
 
 /* 
     PROGRESS BARRR
@@ -30,4 +100,32 @@
     height: 100%;
     background-color: #4caf50;
     border-radius: 4px;
+}
+
+@media only screen and (max-width: 600px) {
+    .hTitle {
+        flex-direction: column;
+    }
+
+    .hTitle *:not(:first-child) {
+        padding-left: 0
+    }
+
+    .hUser {
+        flex-direction: column;
+    }
+
+    .hUser *:not(:last-child) {
+        padding-right: 0
+    }
+
+    .qTitle {
+        margin: auto;
+        flex-direction: column;
+    }
+
+    .qBox {
+        flex-direction: column;
+        max-width: 480px;
+    }
 }
