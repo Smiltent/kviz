@@ -41,8 +41,10 @@ router.post("/start", auth.userAuth, async (req, res) => {
         ...q,
         answers: q.answers.map(({ text }) => ({ text }))
     }))
+
+    const safeQuestions = JSON.stringify(questions).replace(/</g, '\\u003c')
     
-    res.render("quiz/view", { questions, quizid })
+    res.render("quiz/view", { questions: safeQuestions, quizid })
 })
 
 router.post('/end', auth.userAuth, async (req, res) => {

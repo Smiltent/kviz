@@ -3,6 +3,8 @@ import User from "@/models/User"
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
 
+const DUMMY_HASH = '$2b$12$invalidsaltthatisexactly22charslongXXXXXXXXXXXXXXXXXXXX'
+
 export default class Auth {
     public static async register(username: string, password: string) { 
         const existing = await User.findOne({ username })
@@ -16,7 +18,10 @@ export default class Auth {
 
     public static async login(username: string, password: string) { 
         const user = await User.findOne({ username })
-        if (!user) throw new Error("User with that password not found")
+        if (!user) {
+            await bcrypt.compare(password, DUMMY_HASH)
+            throw new Error("User with that password not found")
+        }
 
         const isValid = await bcrypt.compare(password, user.password)
         if (!isValid) throw new Error("User with that password not found")

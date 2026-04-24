@@ -11,7 +11,10 @@ export default async function root(req: Request, res: Response, next: NextFuncti
             const payload: any = jwt.verify(token, String(process.env.JWT_SECRET))
             const user = await User.findById(payload.id).lean()
 
-            if (!user) return res.status(403).send("There has been a server error!")
+            if (!user) {
+                res.clearCookie("token")
+                return res.redirect("/")
+            }
 
             res.locals.user = {
                 authorized: true,

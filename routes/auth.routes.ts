@@ -7,7 +7,7 @@ const router = Router()
 
 const COOKIE = {
     httpOnly: true,
-    secure: process.env.NODE_DEV === "prod",
+    secure: process.env.NODE_ENV === "prod",
     sameSite: 'strict' as 'strict',
     maxAge: 24 * 60 * 60 * 1000
 }
@@ -19,7 +19,13 @@ router.post("/register", auth.guestAuth, async (req, res) => {
     try {
         const { username, password } = req.body
 
-        if (username.length < 3) {
+        if (!username || typeof username !== 'string') {
+            errors.push("Username is required")
+        }
+        if (!password || typeof password !== 'string') {
+            errors.push("Password is required")
+        }
+        if (username.length < 3 || username.length > 20) {
             errors.push("Username must be between 3 and 20 characters")
         }
         if (username.match(/[^a-zA-Z0-9_]/)) {
@@ -28,7 +34,7 @@ router.post("/register", auth.guestAuth, async (req, res) => {
         if (password.length < 6 || password.length > 64) {
             errors.push("Password must be between 6 and 64 characters")
         }
-        if (errors.length !== 0) throw new Error()
+        if (errors.length !== 0) throw new Error("User with that password not found")
 
         const token = await Auth.register(username, password)
         res.cookie('token', token, COOKIE)
