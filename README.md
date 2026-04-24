@@ -1,15 +1,14 @@
-# kviz
+<h1 align="center">Kviz</h1>
+<p align="center"><em>a Really Simple Quiz App</em></p>
 
-To install dependencies:
+# About
+This was created for my School Assignment
 
-```bash
-bun install
+# Setup
+Rename [.env.example](.env.example) to .env, configure values.
+
+Install the [Bun](https://bun.sh/) runtime. Then, run:
+```sh
+bun run prod
 ```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.20. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+The server will be active on `http://localhost:3000`!
