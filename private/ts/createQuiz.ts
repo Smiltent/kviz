@@ -14,14 +14,43 @@ interface Questions {
     answers: Answers[];
 }
 
+function createAnswer() {
+    const aDiv = document.createElement("div")
+
+    aDiv.innerHTML = `
+        <input type="checkbox" class="qIsCorrect">
+        <input type="text" placeholder="Answer" class="qAnswerText" required>
+
+        <button type="button" class="qRemoveAnswerBtn">Remove</button>
+    `
+
+    aDiv.querySelector(".qRemoveAnswerBtn")?.addEventListener("click", () => {
+        aDiv.remove()
+    })
+
+    return aDiv
+}
+
+function reNumberQuestions() {
+    questionContainer.querySelectorAll(".qQuestion").forEach((q, i) => {
+        const span = q.querySelector(".qNumber")
+        if (span) {
+            span.textContent = `${i + 1}. `
+        }
+    })
+}
+
 // add more questions
 questionAddButton.addEventListener("click", () => {
     const qDiv = document.createElement("div")
     qDiv.classList.add("qQuestion")
 
+    const qNumber = questionContainer.querySelectorAll(".qQuestion").length + 1
+
     qDiv.innerHTML = `
         <hr class="pbHr">
         <div class="qCreateTitle flex">
+            <span class="qNumber"></span>
             <input type="text" placeholder="Question" class="qQuestionText" required>
             <button type="button" class="qRemoveQuestionBtn">Remove</button>
         </div>  
@@ -30,29 +59,25 @@ questionAddButton.addEventListener("click", () => {
         <button type="button" class="qAnswerBtn">Add Answer</button>
     `
 
+    let answers = qDiv.querySelector(".qAnswers")
+    for (let i = 0; i < 4; i++) {
+        answers?.appendChild(createAnswer())
+    }
+
     qDiv.querySelector(".qRemoveQuestionBtn")?.addEventListener("click", () => {
         qDiv.remove()
+        reNumberQuestions()
     })
 
     qDiv.querySelector(".qAnswerBtn")?.addEventListener("click", (e) => {
         const answersDiv = (e.target as HTMLButtonElement).parentElement?.querySelector(".qAnswers")
-        const aDiv = document.createElement("div")
-
-        aDiv.innerHTML = `
-            <input type="checkbox" class="qIsCorrect">
-            <input type="text" placeholder="Answer" class="qAnswerText" required>
-
-            <button type="button" class="qRemoveAnswerBtn">Remove</button>
-        `
-
-        aDiv.querySelector(".qRemoveAnswerBtn")?.addEventListener("click", () => {
-            aDiv.remove()
-        })
+        const aDiv = createAnswer()
 
         answersDiv?.appendChild(aDiv)
     })
 
     questionContainer.appendChild(qDiv)
+    reNumberQuestions()
 })
 
 questionForm.addEventListener("submit", (e) => {
