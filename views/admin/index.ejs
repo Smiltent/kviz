@@ -22,8 +22,10 @@
                 <option value="<%= quiz._id %>"><%= quiz.title %></option>
             <% }) %>
         </select>
-        <input type="submit" value="Delete Quiz">
+        <input type="submit" class="qDelete" value="Delete Quiz">
     </form>
 <% } else { %>
     <p>no quizzes to delete found... create one!</p>
 <% } %>
+
+<script src="/public/js/quizDeleteConfirm.js"></script>
