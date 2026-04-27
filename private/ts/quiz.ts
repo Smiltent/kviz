@@ -67,7 +67,11 @@ function showQuestion() {
 
     const questionElement = document.getElementById("quizQuestion")
     if (questionElement) {
-        questionElement.textContent = `Q${currentIdx + 1}: ${qq?.question}`
+        if (/[!?.]$/.test(qq?.question)) {
+            questionElement.textContent = `Q${currentIdx + 1}: ${qq?.question}`
+        } else {
+            questionElement.textContent = `Q${currentIdx + 1}: ${qq?.question}?`
+        }
     }
 
     const answersContainer = document.getElementById("quizAnswers")
