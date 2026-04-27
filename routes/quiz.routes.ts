@@ -2,6 +2,7 @@
 import auth from "@/middlewares/auth.middleware"
 import Quiz from "@/models/Quiz"
 import User from "@/models/User"
+import mongoose from "mongoose"
 
 import { Router } from "express"
 const router = Router()
@@ -34,6 +35,8 @@ router.get("/highscores", auth.userAuth, async (req, res) => {
 // get question & it's answers
 router.post("/start", auth.userAuth, async (req, res) => {
     const { quizid } = req.body
+    if (!mongoose.Types.ObjectId.isValid(quizid)) return res.status(400).json({ error: "Invalid quiz ID!" })
+
     const quiz = await Quiz.findById(quizid).lean()
     if (!quiz) return res.status(404).json({ error: "Cannot find quiz!" })
 
@@ -49,8 +52,9 @@ router.post("/start", auth.userAuth, async (req, res) => {
 
 router.post('/end', auth.userAuth, async (req, res) => {
     const { quizid, results } = req.body
-    const quiz = await Quiz.findById(quizid).lean()
+    if (!mongoose.Types.ObjectId.isValid(quizid)) return res.status(400).json({ error: "Invalid quiz ID!" })
 
+    const quiz = await Quiz.findById(quizid).lean()
     if (!quiz) return res.status(404).json({ error: "Cannot find quiz!" })
     if (!results) return res.status(404).json({ error: "No results provided!" })
 

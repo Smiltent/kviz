@@ -45,8 +45,6 @@ questionAddButton.addEventListener("click", () => {
     const qDiv = document.createElement("div")
     qDiv.classList.add("qQuestion")
 
-    const qNumber = questionContainer.querySelectorAll(".qQuestion").length + 1
-
     qDiv.innerHTML = `
         <hr class="pbHr">
         <div class="qCreateTitle flex">

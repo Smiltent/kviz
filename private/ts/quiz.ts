@@ -134,7 +134,7 @@ async function submitResults() {
     container.innerHTML = `<p>Submitting...</p>`
 
     try {
-        const res = await fetch ("/quiz/end", {
+        const res = await fetch("/quiz/end", {
             method: "POST",
             headers: { "Content-Type": "application/json"},
             body: JSON.stringify({ quizid, results })

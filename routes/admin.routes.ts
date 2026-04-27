@@ -2,6 +2,7 @@
 import auth from "@/middlewares/auth.middleware"
 import Quiz from "@/models/Quiz"
 import User from "@/models/User"
+import mongoose from "mongoose"
 
 import { Router } from "express"
 const router = Router()
@@ -67,6 +68,8 @@ router.post("/delete", auth.userAuth, auth.requireRole("admin"), async (req, res
     const { quizid } = req.body
     const errors: string[] = []
 
+    if (!mongoose.Types.ObjectId.isValid(quizid)) return res.status(400).json({ error: "Invalid quiz ID!" })
+
     try {
         const quiz = await Quiz.findById(quizid)
         if (!quiz) {
@@ -83,8 +86,8 @@ router.post("/delete", auth.userAuth, auth.requireRole("admin"), async (req, res
 
         res.redirect("/admin")
     } catch (err) {
-        console.error(err)
-        res.status(500).json({ errors })
+        console.error(`Failed to delete quiz: ${err}`)
+        res.status(500).render("admin/index", { errors })
     } 
 })
 

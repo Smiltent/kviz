@@ -29,19 +29,22 @@ router.post("/register", auth.guestAuth, async (req, res) => {
             errors.push("Username must be between 3 and 20 characters")
         }
         if (username.match(/[^a-zA-Z0-9_]/)) {
-            errors.push("Username must contain only letters, numbers and underscores")
+            errors.push("Username must contain only letters, numbers and __'s")
+        }
+        if (password.match(/[^a-zA-Z0-9_?!]/)) {
+            errors.push("Password must contain only letters, numbers, __'s, !!'s and ??'s")
         }
         if (password.length < 6 || password.length > 64) {
             errors.push("Password must be between 6 and 64 characters")
         }
-        if (errors.length !== 0) throw new Error("User with that password not found")
+        if (errors.length !== 0) throw new Error("Cannot create account")
 
         const token = await Auth.register(username, password)
         res.cookie('token', token, COOKIE)
 
         res.redirect('/quiz')
     } catch (err) {
-        if (err instanceof Error && err.message) {
+        if (errors.length == 0 && err instanceof Error && err.message) {
             errors.push(err.message)
         }
         
@@ -59,7 +62,7 @@ router.post("/login", auth.guestAuth, async (req, res) => {
 
         res.redirect("/quiz")
     } catch (err) {
-        console.error("LOGIN ERROR:", err)
+        console.error(`Failed to login user: ${err}`)
 
         const error = err instanceof Error ? err.message : "An error occurred"
         res.status(400).render("index", { loginErrors: [error] })
