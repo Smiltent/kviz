@@ -14,7 +14,7 @@ interface AuthReq extends Request {
 async function userAuth(req: AuthReq, res: Response, next: NextFunction) {
     try {
         const token = req.cookies?.token
-        if (!token) return res.status(401).json({ error: "Unauthorized"})
+        if (!token) throw new Error("Unauthorized")
 
         const payload: any = jwt.verify(token, String(process.env.JWT_SECRET))
 
@@ -34,7 +34,7 @@ async function userAuth(req: AuthReq, res: Response, next: NextFunction) {
 async function guestAuth(req: Request, res: Response, next: NextFunction) {
     try {
         const token = req.cookies?.token
-        if (token) return res.status(403).json({ error: "Forbidden"})
+        if (token) throw new Error("Forbidden")
 
         return next()
     } catch (err) {
