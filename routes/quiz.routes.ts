@@ -15,7 +15,7 @@ router.get("/", auth.userAuth, async (req, res) => {
 
 router.get("/highscores", auth.userAuth, async (req, res) => {
     const user = await User.findById(res.locals.user.id)
-    if (!user) return res.status(404).json({ message: `User not found` })
+    if (!user) return res.status(404).json({ message: `User not found (this error shouldn't be possible)` })
 
     const highscores = await Promise.all(
         user.highScores.map(async (hs) => {
@@ -75,7 +75,7 @@ router.post('/end', auth.userAuth, async (req, res) => {
     const total = quiz.questions.length
 
     const user = await User.findById(res.locals.user.id)
-    if (!user) return res.status(404).json({ message: `User not found `})
+    if (!user) return res.status(404).json({ message: `User not found (this error shouldn't be possible)` })
 
     const existing = user.highScores.find((hs) => hs.id === quizid)
     if (existing) {
