@@ -66,6 +66,11 @@ router.post('/end', auth.userAuth, async (req, res) => {
         )
         if (!question) continue
 
+        const answerExists = question.answers.some(
+            (a) => a.text === result.selectedAnswer
+        )
+        if (!answerExists) return res.status(400).json({ error: `Answer "${result.selectedAnswer}" does not exist for question!` })
+
         const isCorrect = question.answers.some(
             (a) => a.text === result.selectedAnswer && a.isCorrect === true
         )

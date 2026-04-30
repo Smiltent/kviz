@@ -140,13 +140,18 @@ async function submitResults() {
             body: JSON.stringify({ quizid, results })
         })
 
-        if (!res.ok) throw new Error(`Server error: ${res.status}`)
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => null)
+            throw new Error(errorData?.error ?? `Server error: ${res.status}`)
+        }
 
         const data: QuizEndResponse = await res.json()
         showResults(data)
     } catch (err) {
+        const message = err instanceof Error ? err.message : "An unexpected error occurred"
         container.innerHTML = `
             <h1>Something went wrong!</h1>
+            <p>${message}</p>
         `
     }
 }

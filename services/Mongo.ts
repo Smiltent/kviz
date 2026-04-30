@@ -2,7 +2,7 @@
 import mongoose from "mongoose"
 
 export default class Database {
-    constructor(private uri: string) {
+    constructor(private uri: string = process.env.DATABASE_CONNECTION!) {
         this.connect()
     }
 

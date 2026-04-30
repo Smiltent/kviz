@@ -70,6 +70,10 @@ router.post("/login", auth.guestAuth, async (req, res) => {
 })
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
+router.get("/logout", auth.userAuth, async (req, res) => {
+    res.render("logout")
+})
+
 router.post("/logout", auth.userAuth, async (req, res) => {
     res.clearCookie("token")
     res.redirect("/")

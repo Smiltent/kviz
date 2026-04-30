@@ -18,7 +18,7 @@
     <input type="text" name="title" placeholder="Quiz Title" required>
     <div id="qContainer"></div>
 
-    <input type="hidden" name="questions" id="qInput">
+    <input type="hidden" name="questions" id="qInput" required>
 
     <% if (typeof createErrors !== 'undefined' && createErrors) { %>
         <% for (let error of createErrors) { %>

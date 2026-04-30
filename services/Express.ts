@@ -9,7 +9,7 @@ import path from "path"
 export default class Express {
     private app: express.Express
 
-    constructor(private port: string | number = 3000) {
+    constructor(private port: string | number = process.env.PORT!) {
         this.app = express()
 
         this.i()
@@ -17,8 +17,8 @@ export default class Express {
 
     private async i() {
         await this.middleware()
-        await this.routes()
         await this.public()
+        await this.routes()
         this.start()
     }
 

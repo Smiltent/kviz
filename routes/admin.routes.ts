@@ -7,6 +7,10 @@ import mongoose from "mongoose"
 import { Router } from "express"
 const router = Router()
 
+function isEmpty(value: string): Boolean {
+    return value.trim() === ""
+}
+
 router.get("/", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
     const list = await Quiz.find().lean()
 
@@ -24,19 +28,23 @@ router.post("/create", auth.userAuth, auth.requireRole("admin"), async (req, res
     try {
         const { title, questions } = req.body
 
-        if (!title) {
-            errors.push("Title shouldn't be empty")
+        if (!title || isEmpty(title)) {
+            errors.push("Title cannot be empty")
         }
 
-        if (!questions) {
-            errors.push("Questions shouldn't be empty")
+        if (!questions || isEmpty(questions)) {
+            errors.push("Questions cannot be empty")
         }
 
         const parsed = typeof questions === "string"
             ? JSON.parse(questions)
             : questions
 
-        parsed.forEach((q: { answers: any[] }, i: number) => {
+        parsed.forEach((q: { text: string; answers: any[] }, i: number) => {
+            if (!q.text || isEmpty(q.text)) {
+                errors.push(`Answer ${i + 1} cannot be empty`)
+            }
+
             const hasCorrect = q.answers?.some(a => a.isCorrect)
 
             if (!hasCorrect) {

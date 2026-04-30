@@ -33,5 +33,5 @@ require('dotenv').config({ path: `.env${env}` })
 import log from './utils/log.ts'
 log(debug)
 
-export const databaseClient = new Database(process.env.DATABASE_CONNECTION!)
-export const expressClient = new Express(process.env.PORT!)
+export const databaseClient = new Database()
+export const expressClient = new Express()
