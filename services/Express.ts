@@ -12,13 +12,17 @@ export default class Express {
     constructor(private port: string | number = 3000) {
         this.app = express()
 
-        this.middleware()
-        this.routes()
-        this.public()
+        this.i()
+    }
+
+    private async i() {
+        await this.middleware()
+        await this.routes()
+        await this.public()
         this.start()
     }
 
-    private middleware() {
+    private async middleware() {
         this.app.use(expressLayouts)
         this.app.use(express.json())
         this.app.use(cookieParser())
@@ -39,7 +43,7 @@ export default class Express {
         })
     }
 
-    private public() {
+    private async public() {
         const isDev = process.env.NODE_DEV === "dev"
 
         this.app.use(
