@@ -32,7 +32,6 @@ export default class Express {
         this.app.set("layout", "components/$index")
 
         this.app.use(root)
-        this.app.use(express.static("public"))
     }
 
     private async routes() {

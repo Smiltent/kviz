@@ -1,6 +1,7 @@
 
 import auth from "@/middlewares/auth.middleware"
 import Auth from "@/services/Auth"
+import { isEmpty } from "@/utils/empty"
 
 import { Router } from "express"
 const router = Router()
@@ -19,10 +20,10 @@ router.post("/register", auth.guestAuth, async (req, res) => {
     try {
         const { username, password } = req.body
 
-        if (!username || typeof username !== 'string') {
+        if (!username || typeof username !== 'string' || isEmpty(username)) {
             errors.push("Username is required")
         }
-        if (!password || typeof password !== 'string') {
+        if (!password || typeof password !== 'string' || isEmpty(password)) {
             errors.push("Password is required")
         }
         if (username.length < 3 || username.length > 20) {
@@ -54,18 +55,29 @@ router.post("/register", auth.guestAuth, async (req, res) => {
 
 // ==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==
 router.post("/login", auth.guestAuth, async (req, res) => {
+    let errors: string[] = []
+
     try {
         const { username, password } = req.body
+
+        if (!username || typeof username !== 'string' || isEmpty(username)) {
+            errors.push("Username is required")
+        }
+        if (!password || typeof password !== 'string' || isEmpty(password)) {
+            errors.push("Password is required")
+        }
+        if (errors.length !== 0) throw new Error("Cannot authenticate")
 
         const token = await Auth.login(username, password)
         res.cookie('token', token, COOKIE)
 
         res.redirect("/quiz")
     } catch (err) {
-        console.error(`Failed to login user: ${err}`)
+        if (errors.length == 0 && err instanceof Error && err.message) {
+            errors.push(err.message)
+        }
 
-        const error = err instanceof Error ? err.message : "An error occurred"
-        res.status(400).render("index", { loginErrors: [error] })
+        res.status(400).render("index", { loginErrors: errors })
     }
 })
 

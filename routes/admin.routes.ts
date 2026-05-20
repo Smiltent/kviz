@@ -5,11 +5,8 @@ import User from "@/models/User"
 import mongoose from "mongoose"
 
 import { Router } from "express"
+import { isEmpty } from "@/utils/empty"
 const router = Router()
-
-function isEmpty(value: string): Boolean {
-    return value.trim() === ""
-}
 
 router.get("/", auth.userAuth, auth.requireRole("admin"), async (req, res) => {
     const list = await Quiz.find().lean()
@@ -40,8 +37,9 @@ router.post("/create", auth.userAuth, auth.requireRole("admin"), async (req, res
             ? JSON.parse(questions)
             : questions
 
-        parsed.forEach((q: { text: string; answers: any[] }, i: number) => {
-            if (!q.text || isEmpty(q.text)) {
+        parsed.forEach((q: { question: string; answers: any[] }, i: number) => {
+            console.log(JSON.stringify(q))
+            if (!q.question || isEmpty(q.question)) {
                 errors.push(`Answer ${i + 1} cannot be empty`)
             }
 
