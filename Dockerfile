@@ -14,4 +14,4 @@ RUN apt-get update \
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-CMD ["bun", "run", "start"]
+CMD ["bun", "run", "index.ts"]
