@@ -7,16 +7,29 @@
 
         <form action="/auth/logout" method="POST">
             <button type="submit" class="betterBtn">Logout</button>
-        </form> 
+        </form>
     </div>
 </div>
 
-<div>
-    <% if (typeof highscores !== 'undefined' && highscores.length > 0) { %>
-        <% highscores.forEach(score => { %>
-            <p><%= score.name %> - <%= score.score %>/<%= score.count %></p>
-        <% })%>
-    <% } else { %>
-        <p>no high scores found... maybe complete some quizzes??</p>
-    <% } %>
-</div>
+<% if (typeof highscores !== 'undefined' && highscores.length > 0) { %>
+    <ul class="scoreBoard">
+        <% highscores
+            .slice()
+            .sort((a, b) => (b.count ? b.score / b.count : 0) - (a.count ? a.score / a.count : 0))
+            .forEach(score => {
+                const pct = score.count ? Math.round((score.score / score.count) * 100) : 0;
+        %>
+            <li class="scoreRow">
+                <div class="scoreTop">
+                    <span class="scoreName"><%= score.name %></span>
+                    <span class="scoreValue"><%= score.score %>/<%= score.count %> · <%= pct %>%</span>
+                </div>
+                <div class="scoreBarTrack">
+                    <div class="scoreBarFill" style="width: <%= pct %>%"></div>
+                </div>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p class="scoreEmpty">no high scores found... maybe complete some quizzes??</p>
+<% } %>

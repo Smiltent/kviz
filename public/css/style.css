@@ -368,7 +368,70 @@ input[type=checkbox] {
     margin-right: 3px;
 }
 
-/* 
+/*
+    HIGHSCORESSS
+*/
+.scoreBoard {
+    width: 100%;
+    max-width: 480px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.scoreRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+    background-color: var(--mantle);
+    border: 1px solid var(--surface0);
+    border-radius: 10px;
+}
+
+.scoreTop {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.scoreName {
+    font-family: Rubik, sans-serif;
+    font-weight: 500;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.scoreValue {
+    flex: 0 0 auto;
+    font-family: Rubik, sans-serif;
+    font-size: 0.85rem;
+    color: var(--subtext);
+}
+
+.scoreBarTrack {
+    height: 6px;
+    background-color: var(--surface0);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.scoreBarFill {
+    height: 100%;
+    background-color: var(--green);
+    border-radius: 3px;
+}
+
+.scoreEmpty {
+    color: var(--subtext);
+    text-align: center;
+}
+
+/*
     PROGRESS BARRR
 */
 .qProgress {
