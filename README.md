@@ -4,7 +4,7 @@
 <img src="_header.png">
 
 # About
-This is a simple Quiz App, where it's mainly designed to let users take quizes on topics, which the admins have created.  
+This is a simple Quiz App designed to let users take quizzes on a variety of topics. It also allows admins to easily create and delete quizzes for users.
 Built using TS, Express.js and EJS.
 
 # Demo Video
