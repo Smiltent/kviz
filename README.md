@@ -24,3 +24,6 @@ Install the [Bun](https://bun.sh/) runtime. Then, run:
 bun run prod
 ```
 The server will be active on `http://localhost:3000` (or whatever port you set it to)!
+
+# AI Usage
+Whilst creating, AI was used for the design (mainly formating) and some backend code (small functions).
