@@ -11,7 +11,8 @@ export default class Auth {
         if (existing) throw new Error("Username is already taken")
 
         const hash = await bcrypt.hash(password, 12)
-        await User.create({ username, password: hash })
+        const isFirstUser = (await User.countDocuments()) === 0
+        await User.create({ username, password: hash, roles: isFirstUser ? ["user", "admin"] : ["user"] })
 
         return this.login(username, password)
     }
