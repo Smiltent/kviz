@@ -22,7 +22,6 @@ function createAnswer() {
     aDiv.innerHTML = `
         <label class="qCorrectLabel">
             <input type="checkbox" class="qIsCorrect">
-            correct
         </label>
         <input type="text" placeholder="Answer" class="qAnswerText" required>
         <button type="button" class="qRemoveAnswerBtn">Remove</button>
