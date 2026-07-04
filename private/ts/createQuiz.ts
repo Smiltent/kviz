@@ -3,6 +3,7 @@ const questionContainer = document.getElementById("qContainer") as HTMLDivElemen
 const questionAddButton = document.getElementById("qAddButton") as HTMLButtonElement
 const questionForm = document.getElementById("qForm") as HTMLFormElement
 const questionInput = document.getElementById("qInput") as HTMLInputElement
+const formError = document.getElementById("qFormError") as HTMLParagraphElement
 
 interface Answers {
     text: String;
@@ -16,11 +17,14 @@ interface Questions {
 
 function createAnswer() {
     const aDiv = document.createElement("div")
+    aDiv.classList.add("qAnswerRow")
 
     aDiv.innerHTML = `
-        <input type="checkbox" class="qIsCorrect">
+        <label class="qCorrectLabel">
+            <input type="checkbox" class="qIsCorrect">
+            correct
+        </label>
         <input type="text" placeholder="Answer" class="qAnswerText" required>
-
         <button type="button" class="qRemoveAnswerBtn">Remove</button>
     `
 
@@ -46,15 +50,15 @@ questionAddButton.addEventListener("click", () => {
     qDiv.classList.add("qQuestion")
 
     qDiv.innerHTML = `
-        <hr class="pbHr">
         <div class="qCreateTitle flex">
             <span class="qNumber"></span>
             <input type="text" placeholder="Question" class="qQuestionText" required>
-            <button type="button" class="qRemoveQuestionBtn">Remove</button>
+            <button type="button" class="qRemoveQuestionBtn betterBtn qDelete">Remove</button>
         </div>  
         <div class="qAnswers"></div>
 
-        <button type="button" class="qAnswerBtn">Add Answer</button>
+        <p class="red qQuestionError" role="alert"></p>
+        <button type="button" class="qAnswerBtn betterBtn">Add Answer</button>
     `
 
     let answers = qDiv.querySelector(".qAnswers")
@@ -81,10 +85,14 @@ questionAddButton.addEventListener("click", () => {
 questionForm.addEventListener("submit", (e) => {
     let valid = true
 
-    // validate if the questions has at least one correct selected
+    formError.textContent = ""
+    questionContainer.querySelectorAll(".qQuestionError").forEach(el => {
+        el.textContent = ""
+    })
+    
     const que = document.querySelectorAll(".qQuestion")
     if (que.length === 0) {
-        alert("Please add at least one question!! 😡😡😡")
+        formError.textContent = "Add at least one question!!"
         return e.preventDefault()
     }
 
@@ -96,7 +104,10 @@ questionForm.addEventListener("submit", (e) => {
 
         if (!hasCorrect) {
             valid = false
-            alert(`Question ${i + 1} must have at least one correct answer`)
+            const err = q.querySelector(".qQuestionError")
+            if (err) {
+                err.textContent = "This question needs at least one correct answer!!"
+            }
         }
     })
 

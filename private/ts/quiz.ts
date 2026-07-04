@@ -47,7 +47,7 @@ function updateProgressBar() {
         progressBar.style.width = `${percent}%`
 
         progressBar.setAttribute("aria-valuenow", String(currentIdx))
-        progressBar.setAttribute("aria-valuenow", String(total))
+        progressBar.setAttribute("aria-valuemax", String(total))
     }
 
     if (progressBarLabel) {
@@ -57,6 +57,11 @@ function updateProgressBar() {
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 function showQuestion() {
+    const errorEl = document.getElementById("quizError")
+    if (errorEl) {
+        errorEl.textContent = ""
+    }
+            
     if (currentIdx >= shuffleQuestions.length) return submitResults()
     
     const qq = shuffleQuestions[currentIdx]
@@ -87,6 +92,7 @@ function showQuestion() {
         radio.name = "quizAnswer"
         radio.id = id
         radio.value = answer.text
+        radio.classList.add("visuallyHidden")
 
         const label = document.createElement("label")
         label.htmlFor = id
@@ -96,6 +102,12 @@ function showQuestion() {
         wrapper.classList.add("answer-option")
         wrapper.appendChild(radio)
         wrapper.appendChild(label)
+
+        wrapper.addEventListener("click", () => {
+            radio.checked = true
+            answersContainer.querySelectorAll(".answer-option").forEach(el => el.classList.remove("selected")) 
+            wrapper.classList.add("selected")
+        })
 
         answersContainer.appendChild(wrapper)
     })
@@ -111,11 +123,21 @@ function showQuestion() {
 }
 
 function handleNext() {
+    const errorEl = document.getElementById("quizError")
+    if (errorEl) {
+        errorEl.textContent = ""
+    }
+    
     const selected = document.querySelector<HTMLInputElement>(
         'input[name="quizAnswer"]:checked'
     )
 
-    if (!selected) return alert("Please submit an answer! 😤😤😤")
+    if (!selected) {
+        if (errorEl) {
+            errorEl.textContent = "Please select an answer before continuing!!"
+        }
+        return
+    }
 
     results.push({
         questionId: shuffleQuestions[currentIdx]!._id,
@@ -160,16 +182,29 @@ function showResults(data: QuizEndResponse) {
     const container = document.querySelector(".quiz")
     if (!container) return
 
+    let sec = 5
+
     container.innerHTML = `
         <div class="header flex">
-            <div class="qTitle flex">
-                <h1>Quiz Complete!</h1>
-                <a href="/quiz">main page</a>
-            </div>
+            <h1>Quiz Complete!</h1>
         </div>
         
-        <p>You scored ${data.correct} out of ${data.total}!
+        <p>You scored ${data.correct} out of ${data.total}!</p>
     `
+
+    const countdownEl = document.getElementById("quizRedirect")
+
+    const timer = setInterval(() => {
+        sec--
+        if (countdownEl) {
+            countdownEl.textContent = String(sec)
+        }
+
+        if (sec <= 0) {
+            clearInterval(timer)
+            window.location.href = "/quiz"
+        }
+    }, 1000)
 }
 
 (window as any).init = init

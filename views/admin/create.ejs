@@ -1,24 +1,23 @@
 
-<div class="header flex">
-    <div class="hTitle flex">
-        <h1>create quiz</h1>
-        <a href="/admin">admin page</a>
-    </div>
-
-    <div class="hUser flex">
-        <p>hello, <%= user.username %>!</p>
+<div class="header">
+    <h1>create quiz</h1>
+    <p class="hGreeting">hello, <%= user.username %>!</p>
+    <div class="hButtons flex">
+        <a href="/admin" class="betterBtn">back</a>
 
         <form action="/auth/logout" method="POST">
-            <input type="submit" value="Logout">
+            <button type="submit" class="betterBtn">Logout</button>
         </form> 
     </div>
 </div>
 
-<form id="qForm" action="/admin/create" method="POST">
+<form id="qForm" class="qCreateForm" action="/admin/create" method="POST">
     <input type="text" name="title" placeholder="Quiz Title" required>
     <div id="qContainer"></div>
 
     <input type="hidden" name="questions" id="qInput" required>
+
+    <p class="red" id="qFormError" role="alert"></p>
 
     <% if (typeof createErrors !== 'undefined' && createErrors) { %>
         <% for (let error of createErrors) { %>

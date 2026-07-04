@@ -1,15 +1,12 @@
 
-<div class="header flex">
-    <div class="hTitle flex">
-        <h1>the highscores</h1>
-        <a href="/quiz">main page</a>
-    </div>
-
-    <div class="hUser flex">
-        <p>hello, <%= user.username %>!</p>
+<div class="header">
+    <h1>highscores</h1>
+    <p class="hGreeting">hello, <%= user.username %>!</p>
+    <div class="hButtons flex">
+        <a href="/quiz" class="betterBtn">main page</a>
 
         <form action="/auth/logout" method="POST">
-            <input type="submit" value="Logout">
+            <button type="submit" class="betterBtn">Logout</button>
         </form> 
     </div>
 </div>

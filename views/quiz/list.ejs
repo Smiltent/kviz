@@ -1,21 +1,16 @@
 
-<div class="header flex">
-    <div class="hTitle flex">
-        <h1>the quiz</h1>
-
-        <a href="/quiz/highscores">high scores</a>
-        
+<div class="header">
+    <h1>the quiz site</h1>
+    <p class="hGreeting">hello, <%= user.username %>!</p>
+    <div class="hButtons">
+        <a href="/quiz/highscores" class="betterBtn">high scores</a>
         <% if (user.roles.includes("admin")) { %>
-            <a href="/admin">admin panel</a>
+            <a href="/admin" class="betterBtn">admin panel</a>
         <% } %>
-    </div>
 
-    <div class="hUser flex">
-        <p>hello, <%= user.username %>!</p>
-
-        <form action="/auth/logout" method="POST">
-            <input type="submit" value="Logout">
-        </form> 
+        <form action="/auth/logout" method="post">
+            <button type="submit" class="betterBtn">Logout</button>
+        </form>
     </div>
 </div>
 
